@@ -1,0 +1,97 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-assurers-table
+      author: naoufal
+      changes:
+        - sql:
+            comment: "Créer l'extension uuid-ossp si elle n'existe pas"
+            sql: "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
+        - createTable:
+            tableName: assurers
+            columns:
+              - column:
+                  name: internal_id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    comment: "Clé primaire interne séquentielle pour des performances optimales"
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    unique: true
+                    comment: "UUID globalement unique pour assurer l'unicité sans coordination centrale"
+              - column:
+                  name: nom
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: prenom
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_naissance
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: adresse
+                  type: TEXT
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 002-drop-assurers-table
+      author: naoufal
+      changes:
+        - sql:
+            comment: "Supprimer la table assurers si elle existe"
+            sql: "DROP TABLE IF EXISTS assurers CASCADE;"
+
+  - changeSet:
+      id: 003-create-new-assurers-table
+      author: naoufal
+      changes:
+        - createTable:
+            tableName: assurers
+            columns:
+              - column:
+                  name: internal_id
+                  type: SERIAL
+                  constraints:
+                    primaryKey: true
+                    comment: "Clé primaire interne séquentielle pour des performances optimales"
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    unique: true
+                    comment: "UUID globalement unique pour assurer l'unicité sans coordination centrale"
+              - column:
+                  name: nom
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: prenom
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_naissance
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: adresse
+                  type: TEXT
+                  constraints:
+                    nullable: false
+        - addDefaultValue:
+            tableName: assurers
+            columnName: id
+            defaultValueComputed: 'uuid_generate_v4()'

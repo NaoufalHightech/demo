@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  database:
+    image: postgres:14
+    container_name: assurers_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "assurers_db"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
+
+
